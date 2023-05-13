@@ -1,2 +1,2 @@
 # burgerizza
-project web prog LEX
+project web prog LEC
