@@ -1,8 +1,10 @@
 @extends('template/main-layout')
 
-    @section('content')
-        @include('template/navbar')
-        @yield('sub-content')
-    @endsection
+<link href="{{ asset('assets/css/layout-two-style.css') }}" rel="stylesheet">
 
-    @include('template/footer')
+@section('content')
+    @include('template/navbar')
+    @yield('sub-content')
+@endsection
+
+@include('template/footer')

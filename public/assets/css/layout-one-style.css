@@ -1,14 +1,4 @@
-@font-face {
-  font-family: Jockey One;
-  src: url(../fonts/JockeyOne-Regular.ttf);
-  font-weight: bold;
-}
-@font-face {
-  font-family: Jacques Francois;
-  src: url(../fonts/JacquesFrancois-Regular.ttf);
-  font-weight: bold;
-}
-
+@import url(main-style.css);
 * {
   font-family: 'Jockey One';
 }
@@ -96,6 +86,7 @@
     text-align: center;
     font-size: 16px;
     color: #fff;
+    border: none;
 }
 
 ._btn_04 a{
