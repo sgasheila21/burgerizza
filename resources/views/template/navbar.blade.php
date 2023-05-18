@@ -12,13 +12,14 @@
           <a class="nav-link {{ (request()->is('home')) ? 'active' : '' }}" aria-current="page" href="{{ url('home') }}">Home</a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <a class="nav-link dropdown-toggle {{ (request()->is('customize-order')) ? 'active' : '' }}" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          {{-- <a class="nav-link dropdown-toggle {{ (request()->is('customize-order/*')) ? 'active' : '' }}" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false"> --}}
             Customize Order
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <li><a class="dropdown-item" href="#">Pizza</a></li>
-            <li><a class="dropdown-item" href="#">Burger</a></li>
-            <li><a class="dropdown-item" href="#">Drink</a></li>
+            <li><a class="dropdown-item" href="{{ url('customize-order') }}">Pizza</a></li>
+            <li><a class="dropdown-item" href="{{ url('customize-order') }}">Burger</a></li>
+            <li><a class="dropdown-item" href="{{ url('customize-order') }}">Drink</a></li>
           </ul>
         </li>
         <li class="nav-item">
