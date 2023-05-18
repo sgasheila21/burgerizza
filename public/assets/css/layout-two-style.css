@@ -1,0 +1,67 @@
+@import url(main-style.css);
+.navbar {
+  font-family: "Jockey One";
+}
+
+a.navbar-brand > img {
+    height: 50px;
+}
+
+.navbar-collapse{
+    justify-content: flex-end;
+}
+
+a.nav-link {
+    padding: 0;
+    margin: 0;
+    > img {
+        height: 25px;
+        padding: 0;
+        margin: 0;
+    }
+}
+
+.form-03-main{
+    width: 75%;
+    height: max-content;
+
+    margin: 20px auto;
+    padding: 50px;
+    background:rgb(255, 255, 255, 0.62);
+    border-radius: 35px;
+    text-align: left;
+
+    font-family: 'Jockey One';
+    font-size: 50px;
+
+    .red-text{
+        color: #F22641;
+        text-decoration: none;
+    }
+    
+    .brown-text{
+        text-decoration: none;
+        color: #B47A01;
+    }
+
+    .button-home-page{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        align-content: space-between;
+
+        > button{
+            background: #F22641;
+            border-radius: 35px;
+            color: white;
+
+            margin: 15px;
+            padding: 5px 25px;
+
+            font-style: normal;
+            font-weight: 400;
+            font-size: 25px;
+        }
+    }
+  }

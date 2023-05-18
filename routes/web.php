@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AboutUsController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 
@@ -19,5 +21,7 @@ Route::get('/', function () {
     // return view('login');
     return redirect('login');
 });
+Route::get('/home', [HomeController::class, 'index']);
+Route::get('/about-us', [AboutUsController::class, 'index']);
 Route::get('/login', [LoginController::class, 'index']);
 Route::get('/register', [RegisterController::class, 'index']);
