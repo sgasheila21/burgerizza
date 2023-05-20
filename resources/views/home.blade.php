@@ -9,7 +9,7 @@
 </style>
 
 @section('sub-content')
-    <div class="form-03-main">
+    <div class="form-03-main mb-5">
         <div>
             <p>
                 <a class="red-text" href="{{ url('home') }}">Burgerizza</a> 

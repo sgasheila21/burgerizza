@@ -9,6 +9,8 @@ class Role extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+    
     public function users () {
         return $this->belongsTo(User::class, 'role_id', 'id');
     }
