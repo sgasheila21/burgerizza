@@ -19,11 +19,12 @@ use App\Http\Controllers\RegisterController;
 */
 
 Route::get('/', function () {
-    // return view('login');
     return redirect('login');
 });
 Route::get('/home', [HomeController::class, 'index']);
 Route::get('/about-us', [AboutUsController::class, 'index']);
 Route::get('/customize-order', [CustomizeOrderController::class, 'index']);
 Route::get('/login', [LoginController::class, 'index']);
+Route::post('/login', [LoginController::class, 'validation'])->name('login-validation');
 Route::get('/register', [RegisterController::class, 'index']);
+Route::post('/register', [RegisterController::class, 'validation'])->name('register-validation');
