@@ -9,11 +9,13 @@
   padding: 40px 20px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  height: 100%;
 }
 
 .form-03-main{
   width: 48%;
-  height: 550px;
+  height: 100%;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -22,7 +24,6 @@
   padding: 50px;
   background:rgba(149, 149, 149, 0.6);
   border-radius: 35px;
-  z-index:9;
 }
 
 .bg_burgerizza{

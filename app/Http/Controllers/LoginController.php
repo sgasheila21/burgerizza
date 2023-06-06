@@ -4,17 +4,20 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
     // index
     public function index(){
+        if(Auth::check()){  return redirect('home'); }
         return view('login');
     }
 
     public function validation (Request $request) {
         $validateData = $request->validate([
-            'email' => 'required|email',
+            'email' => 'required|email:rfc,dns|exists:users',
             'password' => 'required|min:8|max:20',
         ],
         [
@@ -24,16 +27,29 @@ class LoginController extends Controller
             'password.max' => 'The maximum length of password field is 20 characters.'
         ]);
 
+        $remember = isset($request->rememberMe);
         $customer = User::where('email', $request->email)->first();
 
-        if (!is_null($customer) && ($request->password == $customer->password)){
-            return view('home', compact('customer'));
-        }
-        else if (!is_null($customer) && ($request->password != $customer->password)){
+        // if (!is_null($customer) && (Hash::check($request->password,  $customer->password))){
+        //     return view('home', compact('customer'));
+        // }
+        // else 
+        if (!is_null($customer) && (!Hash::check($request->password,  $customer->password))){
             return back()->withErrors(['message' => 'Your password is incorect!'])->withInput();
         }
         else if (is_null($customer)){
             return back()->withErrors(['message' => 'Your email is not registered! Please sign up first.'])->withInput();
+        }
+
+        if(Auth::attempt([ 
+            'email' => $request->email, 
+            'password' => $request->password 
+        ], $remember)){ 
+            session()->put('success','Login Success!');
+            return redirect('/home');
+        }
+        else { //login gagal
+            return redirect('/login')->withInput();
         }
     }
 }

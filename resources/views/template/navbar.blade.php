@@ -17,9 +17,16 @@
             Customize Order
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <li><a class="dropdown-item" href="{{ url('customize-order') }}">Pizza</a></li>
+            @foreach ($categories as $category )
+              <li>
+                <a class="dropdown-item" href="{{ url('customize-order/'.Str::lower(str_replace(' ', '', $category->category_name))) }}">
+                  {{$category->category_name}}
+                </a>
+              </li>
+            @endforeach
+            {{-- <li><a class="dropdown-item" href="{{ url('customize-order') }}">Pizza</a></li>
             <li><a class="dropdown-item" href="{{ url('customize-order') }}">Burger</a></li>
-            <li><a class="dropdown-item" href="{{ url('customize-order') }}">Drink</a></li>
+            <li><a class="dropdown-item" href="{{ url('customize-order') }}">Drink</a></li> --}}
           </ul>
         </li>
         <li class="nav-item">
