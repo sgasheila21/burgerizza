@@ -5,17 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Product extends Model
+class CartHeader extends Model
 {
-    protected $table = 'products';
+    protected $table = 'cart_headers';
 
     protected $fillable = [
-        'attribute_id',
-        'product_name',
-        'product_description',
-        'product_price',
-        'product_quantity',
-        'product_status',
+        'user_id',
+        'category_id',
+        'quantity',
     ];
 
     protected $primaryKey = 'id';

@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
             'username' => 'Sheila Customer',
             'email' => 'sheila.angelina@binus.ac.id',
             'phone_number' => '08123456789',
-            'password' => '12345678',
+            'password' => bcrypt('12345678'),
             'role_id' => 1
         ]);
 
@@ -27,7 +27,7 @@ class UserSeeder extends Seeder
             'username' => 'Sheila Admin',
             'email' => 'sheila.angelina@binus.edu',
             'phone_number' => '089089283758',
-            'password' => '1234567890',
+            'password' => bcrypt('1234567890'),
             'role_id' => 2
         ]);
     }

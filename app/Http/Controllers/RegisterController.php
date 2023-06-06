@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class RegisterController extends Controller
 {
     // index
     public function index(){
+        if(Auth::check()){  return redirect('home'); }
         return view('register');
     }
 
@@ -49,7 +51,7 @@ class RegisterController extends Controller
                 'username' => $request->username,
                 'email' => $request->email,
                 'phone_number' => $request->phone_number,
-                'password' => $request->password,
+                'password' => bcrypt($request->password),
                 'role_id' => 1
             ]);
 
