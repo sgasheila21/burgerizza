@@ -41,3 +41,9 @@ Route::get('/logout', [UserController::class, 'logout'])->middleware('mustLogin'
 
 Route::get('/register', [RegisterController::class, 'index']);
 Route::post('/register', [RegisterController::class, 'validation'])->name('register-validation');
+
+//profile
+Route::get('/profile', [UserController::class, 'profile']);
+Route::post('/profile/updatepassword', [UserController::class, 'updatePassword'])->name('update-password');
+Route::post('/profile/editprofile', [UserController::class, 'editProfile'])->name('edit-profile');
+Route::post('/logout',[UserController::class, 'logout'])->middleware('mustLogin')->name('logout');
