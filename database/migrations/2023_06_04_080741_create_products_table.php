@@ -22,8 +22,9 @@ return new class extends Migration
                     ->on("attributes")
                     ->onDelete("cascade");
 
+            $table->string('product_image_path')->nullable();
             $table->string('product_name');
-            $table->longText('product_description');
+            $table->longText('product_description')->nullable();
             $table->double('product_price');
             $table->integer('product_quantity'); // updated if someone buy it
             $table->string('product_status'); // active or inactive

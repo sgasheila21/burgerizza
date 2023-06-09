@@ -3,8 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AboutUsController;
+use App\Http\Controllers\AttributeController;
 use App\Http\Controllers\CustomizeOrderController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\UserController;
 
@@ -26,6 +28,11 @@ Route::get('/home', [HomeController::class, 'index'])->middleware('mustLogin');
 Route::get('/about-us', [AboutUsController::class, 'index'])->middleware('mustLogin');
 
 Route::get('/customize-order/{category_name}', [CustomizeOrderController::class, 'index'])->middleware('mustLogin');
+
+Route::get('{attribute_id}/product/{product_id}', [ProductController::class, 'index'])->middleware('mustAdmin');
+Route::post('{attribute_id}/product/{product_id}', [ProductController::class, 'postProduct'])->middleware('mustAdmin');
+
+Route::get('{category_id}/attribute/{attribute_id}', [AttributeController::class, 'index'])->middleware('mustAdmin');
 
 Route::get('/login', [LoginController::class, 'index']);
 Route::post('/login', [LoginController::class, 'validation'])->name('login-validation');
