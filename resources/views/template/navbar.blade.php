@@ -33,7 +33,7 @@
           <a class="nav-link {{ (request()->is('about-us')) ? 'active' : '' }}" href="{{ url('about-us') }}">About Us</a>
         </li>
         <li class="nav-item ms-4">
-          <a class="nav-link me-2 pe-0" href="#">
+          <a class="nav-link me-2 pe-0" href="{{ url('profile') }}">
             <img src="{{ asset('assets/icon/user_icon.svg') }}" alt="user">
           </a>
         </li>
