@@ -1,9 +1,12 @@
 <?php
 namespace App\Http\Controllers;
+
+use App\Models\Address;
 use Illuminate\Http\Request;
 use App\Models\Cart;
 use App\Models\CartHeader;
 use App\Models\Category;
+use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
@@ -28,9 +31,18 @@ class CartController extends Controller
 
     public function cart()
     {
+        $profile = Auth::user();
 
-        return view('cart');
+        $categories = Category::all()->where( strtolower('category_status'), '=', 'active');
+        $user_addresses = Address::all()->where('user_id','=',$profile->id);
 
+        $cart = CartHeader::select('user_id','category_id','quantity')
+                        ->where('user_id','=',$profile->id)
+                        ->get();
+                            
+        return view('cart', compact([
+            'categories','cart','user_addresses'
+        ]));
     }
 
     /**
@@ -62,7 +74,7 @@ class CartController extends Controller
         return redirect()->back()->with('success', 'Product added to cart successfully!');
     }
 
-  
+
     /**
 
      * Write code on Method
@@ -91,7 +103,7 @@ class CartController extends Controller
 
     }
 
-  
+
 
     /**
 
