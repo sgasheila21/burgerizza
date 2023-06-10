@@ -14,12 +14,22 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
 
 @section('sub-content')
+  @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul class="mb-0">
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+  @endif
+
   <section class="h-100" id="cart">
       <div class="container py-5">
         <div class="row my-4">
           <h1 class="text-white">Your Cart</h1>
           @if (count($cart) > 0)
-            <form action="/checkout" method="POST" class="d-flex">
+            <form action="/go-to-payment" method="POST" class="d-flex">
               @csrf
               <div class="col-md-8">
                 <div class="card">
@@ -40,7 +50,7 @@
                           <?php
                            $cart_details = DB::table('cart_details')
                                           ->join('products', 'products.id', '=', 'cart_details.product_id')
-                                          ->select('products.id','quantity','product_name','product_image_path','product_description','product_price','product_quantity','product_status')
+                                          ->select('products.id','quantity','product_name','product_image_path','product_description','product_price','cart_details.quantity','product_status')
                                           ->where('cart_details.cart_header_id', '=', $currproduct->id)->get();
                             ?>
                             
@@ -184,6 +194,9 @@
                       <div class="py-3 text-center">
                         <h4 class="mb-0 text-danger">You have no Delivery Address.</h4>
                         <h4 class="mb-0">Click <a href="{{ url('profile') }}">here</a> to Add Delivery Address.</h4>
+                        <select class="form-select" id="deliveryAddress" name="deliveryAddress" hidden>
+                          <option value=null @checked(true)></option>
+                        </select>
                       </div>
                       @endif
   
@@ -191,7 +204,7 @@
                       type="submit" 
                       class="btn btn-primary btn-lg btn-block mt-4"
                     >
-                      Go to checkout
+                      Go to payment
                     </button>
                   
                   </div>

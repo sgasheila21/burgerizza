@@ -1,69 +1,37 @@
 <?php
 
-  
-
 use Illuminate\Database\Migrations\Migration;
-
 use Illuminate\Database\Schema\Blueprint;
-
 use Illuminate\Support\Facades\Schema;
 
-  
-
-class CreateCartsTable extends Migration
-
+return new class extends Migration
 {
-
     /**
-
      * Run the migrations.
-
      *
-
      * @return void
-
      */
-
     public function up()
-
     {
-
-        Schema::create('carts', function (Blueprint $table) {
-
+        Schema::create('payment_methods', function (Blueprint $table) {
             $table->id();
 
-            $table->string("name", 255)->nullable();
-
-            $table->text("description")->nullable();
-
-            $table->string("image", 255)->nullable();
-
-            $table->decimal("price", 6, 2);
+            $table->string("payment_methods_name");
+            $table->string("payment_methods_description")->nullable();
+            $table->string("payment_methods_image_path")->nullable();
+            $table->string("payment_methods_status");
 
             $table->timestamps();
-
         });
-
     }
-
- 
 
     /**
-
      * Reverse the migrations.
-
      *
-
      * @return void
-
      */
-
     public function down()
-
     {
-
-        Schema::dropIfExists('carts');
-
+        Schema::dropIfExists('payment_methods');
     }
-
-}
+};

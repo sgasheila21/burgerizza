@@ -10,6 +10,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\TransactionController;
 
 /*
@@ -32,6 +33,9 @@ Route::get('/about-us', [AboutUsController::class, 'index'])->middleware('mustLo
 Route::get('/customize-order/{category_name}', [CustomizeOrderController::class, 'index'])->middleware('mustLogin');
 
 Route::post('/customize-order/add-to-cart', [CustomizeOrderController::class, 'addToCart'])->name('add-to-cart')->middleware('mustMember');
+Route::post('/go-to-payment', [CartController::class, 'goToPayment'])->name('go-to-payment')->middleware('mustMember');
+
+Route::get('/payment', [PaymentController::class, 'index'])->middleware('mustMember');
 
 Route::get('/login', [LoginController::class, 'index']);
 Route::post('/login', [LoginController::class, 'validation'])->name('login-validation');

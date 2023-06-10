@@ -10,12 +10,6 @@ use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
-    /**
-     * Write code on Method
-     *
-     * @return response()
-     */
-
     public function cart()
     {
         $profile = Auth::user();
@@ -25,34 +19,24 @@ class CartController extends Controller
 
         $cart = CartHeader::join('categories', 'categories.id', '=', 'cart_headers.category_id')
             ->select('cart_headers.id','user_id','category_id','category_name','quantity')
-            ->where('user_id','=',$profile->id)->get();
+            ->where('user_id','=',$profile->id)
+            ->get();
                             
         return view('cart', compact([
             'categories','cart','user_addresses'
         ]));
     }
-
-    public function addToCart($id)
-    {
-
-        $cart = Cart::findOrFail($id);
-        $cart = session()->get('cart', []);
-
-        if(isset($cart[$id])) {
-
-            $cart[$id]['quantity']++;
-
-        } else {
-            $cart[$id] = [
-                "name" => $cart->name,
-                "quantity" => 1,
-                "price" => $cart->price,
-                "image" => $cart->image
-            ];
+    
+    public function goToPayment(Request $request){
+        if(request()->deliveryAddress == "null"){
+            return redirect()->back()
+                ->withErrors('
+                    You must set your delivery address first to continue to payment.
+                    Go to Profile to Add Your Delivery Address.
+                ')
+                ->withInput();
         }
-
-        session()->put('cart', $cart);
-        return redirect()->back()->with('success', 'Product added to cart successfully!');
+        
+        return redirect('payment');
     }
-
 }
