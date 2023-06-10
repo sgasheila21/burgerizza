@@ -7,6 +7,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
+use function PHPUnit\Framework\isEmpty;
+
 class LoginController extends Controller
 {
     // index
@@ -45,8 +47,7 @@ class LoginController extends Controller
             'email' => $request->email, 
             'password' => $request->password 
         ], $remember)){ 
-            session()->put('success','Login Success!');
-            return redirect('/home');
+            return redirect('/home')->with('success','Login Success!');
         }
         else { //login gagal
             return redirect('/login')->withInput();

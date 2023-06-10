@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Address;
 use App\Models\Category;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator as FacadesValidator;
 
 class UserController extends Controller
 {
@@ -21,7 +24,8 @@ class UserController extends Controller
     {
         $categories = Category::all()->where( strtolower('category_status'), '=', 'active');
         $user = Auth::user();
-        return view('/profile',compact('categories','user'));
+        $addresses = Address::where('user_id', auth()->user()->id)->get();
+        return view('/profile',compact('categories','user','addresses'));
     }
 
 
@@ -42,23 +46,27 @@ class UserController extends Controller
         if (is_null($request['phone_number'])) {
             unset($request['phone_number']);
         }
-        
 
-        $validatedData = $request->validate([
+        $validator = FacadesValidator::make($request->all(), [
             'username' => 'sometimes|required|max:100',
             'email' => 'sometimes|required|email',
-            'phone_number' => 'sometimes|required|digits_between:9,15|numeric',
-        ], [
+            'phone_number' => 'sometimes|required|digits_between:9,15|numeric'
+        ],
+        [
             'username.max' => 'The maximum length of the username field is 100 characters.',
             'phone_number.digits_between' => 'The length of the phone number field should be between 9 and 15 characters.',
-            'phone_number.numeric' => 'The phone number must be numeric.',
+            'phone_number.numeric' => 'The phone number must be numeric.'
         ]);
-        
         
         $customer = User::where('email', $request->email)->first();
         $curruser = Auth::user();
         $user = User::find($curruser->id);
-        if (!is_null($customer) && ($request->email == $customer->email)){
+
+        if($validator->fails()){
+            return redirect()->back()->withErrors($validator, 'errors_profile');
+        }
+        
+        if (!is_null($customer) && ($request->email == $customer->email && $user->id != $customer->id)){
             return back()->withErrors(['message' => 'email is already in use, use another email'])->withInput();
         }
         
@@ -75,36 +83,47 @@ class UserController extends Controller
             $user->phone_number = $request->input('phone_number');
         }
         $user->save();
-        session()->flash('successprofile', 'Your profile has been changed successfully.');
-
+        session()->flash('success', 'Your profile has been changed successfully.');
 
         return redirect('/profile');
-
-
-
-
-        return redirect('/profile')->withInput(['message' => 'Update Password  Sucessful']);
     }
 
     public function updatePassword(Request $request)
     {
-        $validatedData = $request->validate([
-            'o_password' => 'required',
-            'n_password' => 'required|min:8',
-            'cn_password' => 'required|same:n_password',
-        ]);
-    
         $curruser = Auth::user();
         $user = User::find($curruser->id);
+
+        $validator = FacadesValidator::make($request->all(), [
+            'o_password' => ['required',
+                function ($attribute, $value, $fail) {
+                    if (!Hash::check($value, auth()->user()->password)) {
+                        $fail('Your old password is incorrect.');
+                    }
+                },
+            ],
+            'n_password' => 'required|min:8',
+            'cn_password' => 'required|same:n_password'
+        ],
+        [
+            'o_password.required' => 'The old password is required.',
+            'n_password.required' => 'The new password is required.',
+            'n_password.min' => 'The minimum length for new password is 8 characters.',
+            'cn_password.required' => 'The confirm new password is required.',
+            'cn_password.same' => 'The confirm new password and new password is not same.'
+        ]);
+
+        if($validator->fails()){
+            return redirect()->back()->withErrors($validator, 'errors_password');
+        }
     
-        if (!password_verify($request->input('o_password'), $user->password)) {
+        if (!password_verify($request->input('o_password'), auth()->user()->password)) {
             return redirect()->back()->withErrors(['o_password' => 'The old password is incorrect.']);
         }
     
         $user->password = bcrypt($request->input('n_password'));
         $user->save();
 
-        session()->flash('successpass', 'Your password has been changed successfully.');
+        session()->flash('success', 'Your password has been changed successfully.');
     
         return redirect('/profile');
     }
