@@ -19,7 +19,7 @@
         <div class="row my-4">
           <h1 class="text-white">Your Cart</h1>
           @if (count($cart) > 0)
-            <form action="/checkout" method="POST" class="d-flex">
+            <form action="/go-to-payment" method="POST" class="d-flex">
               @csrf
               <div class="col-md-8">
                 <div class="card">
@@ -40,13 +40,13 @@
                           <?php
                            $cart_details = DB::table('cart_details')
                                           ->join('products', 'products.id', '=', 'cart_details.product_id')
-                                          ->select('products.id','product_name','product_image_path','product_description','product_price','product_quantity','product_status')
+                                          ->select('products.id','product_name','product_image_path','product_description','product_price','cart_details.quantity','product_status')
                                           ->where('cart_details.cart_header_id', '=', $currproduct->id)->get();
                             ?>
                             
                             @foreach($cart_details as $cart_detail)
                                 @php
-                                    $product_price_total += ($cart_detail->product_quantity * $cart_detail->product_price);
+                                    $product_price_total += ($cart_detail->quantity * $cart_detail->product_price);
                                 @endphp
                             @endforeach
                             
@@ -59,7 +59,7 @@
 
                         <div>
                             @foreach($cart_details as $cart_detail)
-                                <p>{{ $cart_detail->product_name }} (Qty: {{ $cart_detail->product_quantity }}, Price: {{ $cart_detail->product_price }})</p>
+                                <p>{{ $cart_detail->product_name }} (Qty: {{ $cart_detail->quantity }}, Price: {{ $cart_detail->product_price }})</p>
                             @endforeach
                         </div>
 
@@ -190,7 +190,7 @@
                       type="submit" 
                       class="btn btn-primary btn-lg btn-block mt-4"
                     >
-                      Go to checkout
+                      Go to payment
                     </button>
                   
                   </div>

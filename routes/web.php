@@ -31,6 +31,7 @@ Route::get('/about-us', [AboutUsController::class, 'index'])->middleware('mustLo
 Route::get('/customize-order/{category_name}', [CustomizeOrderController::class, 'index'])->middleware('mustLogin');
 
 Route::post('/customize-order/add-to-cart', [CustomizeOrderController::class, 'addToCart'])->name('add-to-cart')->middleware('mustMember');
+Route::post('/go-to-payment', [CartController::class, 'goToPayment'])->name('go-to-payment')->middleware('mustMember');
 
 Route::get('/login', [LoginController::class, 'index']);
 Route::post('/login', [LoginController::class, 'validation'])->name('login-validation');
