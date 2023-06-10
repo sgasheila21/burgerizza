@@ -2,6 +2,9 @@
 @section('title', 'CART')
 
 <style>
+    body { 
+      background: linear-gradient(180deg, #D82911 16.8%, rgba(230, 149, 138, 0.453125) 81.25%, rgba(216, 41, 17, 0) 100%);
+    }
     h1{
         text-align: center;
         padding-bottom: 15px;
@@ -10,11 +13,11 @@
   
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
 
-@section('content')
+@section('sub-content')
   <section class="h-100" id="cart">
       <div class="container py-5">
         <div class="row my-4">
-          <h1>Your Cart</h1>
+          <h1 class="text-white">Your Cart</h1>
           @if (count($cart) > 0)
             <form action="/checkout" method="POST" class="d-flex">
               @csrf
@@ -30,18 +33,16 @@
                     ?>
                     @foreach ($cart as $currproduct)
                       <div class="row pt-4 w-100">
-                        <div class="col-lg-3 col-md-12 mb-4 mb-lg-0">
-                          <div class="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light">
-                            <img src="{{ $currproduct->product_image }}"
-                              class="w-100" alt="{{ $currproduct->product_name }}" 
-                            />
-                          </div>
-                        </div>
-            
                         <div class="col-lg-5 col-md-6 mb-4 mb-lg-0">
-                          <p><strong>{{ $currproduct->product_name }}</strong></p>
+                          <p><strong>{{ $currproduct->category_name }}</strong></p>
                           <p><strong>Price : {{ $currproduct->product_price }}</strong></p>
   
+                         <?php
+                           $cart_details = DB::table('cart_details')
+                                          ->join('products', 'products.id', '=', 'cart_details.product_id')
+                                          ->select('id','product_name','product_image_path','product_description','product_price','product_quantity','product_status')->where('attribute_id', '=', $selectedCategory[$i]->attribute_id);
+                         ?>
+
                           <div class="d-flex mb-4" style="max-width: 300px">
                             <button class="btn btn-primary px-3 me-2"
                               type="button"
@@ -108,7 +109,7 @@
                 </div>
               </div>
   
-              <div class="col-md-4">
+              <div class="col-md-4 ps-2">
                 <div class="card mb-4">
                   <div class="card-header py-3">
                     <h4 class="mb-0">Cart Summary</h4>

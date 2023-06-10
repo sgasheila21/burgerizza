@@ -19,7 +19,8 @@ class MustMember
     {
         if (!Auth::check()) {
             return redirect('/login');
-        } else if (auth()->user()->role_id!=2) {
+        } 
+        else if (auth()->user()->role->name != "Customer"){
             return redirect()->back();
         }
 
