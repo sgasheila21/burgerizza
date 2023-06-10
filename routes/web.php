@@ -9,6 +9,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CartController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,3 +48,12 @@ Route::post('/profile/updatepassword', [UserController::class, 'updatePassword']
 Route::post('/profile/editprofile', [UserController::class, 'editProfile'])->name('edit-profile');
 Route::post('/profile/address/edit/{id}', [AddressController::class, 'editAddress'])->name('edit-address');
 Route::post('/profile/address/delete/{id}', [AddressController::class, 'deleteAddress'])->name('delete-address');
+
+
+//cart
+Route::get('/', [CartController::class, 'index']);  
+Route::get('cart', [CartController::class, 'cart'])->name('cart');
+Route::get('add-to-cart/{id}', [CartController::class, 'addToCart'])->name('add.to.cart');
+Route::patch('update-cart', [CartController::class, 'update'])->name('update.cart');
+Route::delete('remove-from-cart', [CartController::class, 'remove'])->name('remove.from.cart');
+

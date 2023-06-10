@@ -1,10 +1,9 @@
 <?php
-
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Cart;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use App\Models\Product;
 
 class CartSeeder extends Seeder
 {
@@ -15,28 +14,41 @@ class CartSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('cart_headers')->insert([
-            'user_id' => 1,
-            'category_id' => 1,
-            'quantity' => 4,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+        $carts = [
+            [
+                'name' => '*****',
+                'description' => '*****',
+                'image' => '*****',
+                'price' => 100
+            ],
 
-        DB::table('cart_headers')->insert([
-            'user_id' => 1,
-            'category_id' => 2,
-            'quantity' => 4,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+            [
+                'name' => '*****',
+                'description' => '*****',
+                'image' => '*****',
+                'price' => 500
+            ],
 
-        DB::table('cart_headers')->insert([
-            'user_id' => 1,
-            'category_id' => 3,
-            'quantity' => 2,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+            [
+                'name' => '*****',
+                'description' => '*****',
+                'image' => '*****',
+                'price' => 400
+            ],
+
+            [
+                'name' => '*****',
+                'description' => '*****',
+                'image' => '*****',
+                'price' => 200
+            ]
+
+        ];
+
+  
+
+        foreach ($carts as $key => $value) {
+            Cart::create($value);
+        }
     }
 }
