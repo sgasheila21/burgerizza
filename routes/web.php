@@ -29,6 +29,7 @@ Route::get('/home', [HomeController::class, 'index'])->middleware('mustLogin');
 Route::get('/about-us', [AboutUsController::class, 'index'])->middleware('mustLogin');
 
 Route::get('/customize-order/{category_name}', [CustomizeOrderController::class, 'index'])->middleware('mustLogin');
+Route::post('/add-to-cart', [CustomizeOrderController::class, 'addToCart'])->middleware('mustMember');
 
 Route::get('/login', [LoginController::class, 'index']);
 Route::post('/login', [LoginController::class, 'validation'])->name('login-validation');
@@ -51,7 +52,7 @@ Route::post('/profile/address/delete/{id}', [AddressController::class, 'deleteAd
 
 
 //cart
-Route::get('/cart', [CartController::class, 'cart'])->name('cart');
+Route::get('/cart', [CartController::class, 'cart'])->name('cart')->middleware('mustMember');
 Route::get('/add-to-cart/{id}', [CartController::class, 'addToCart'])->name('add.to.cart');
 Route::patch('/update-cart', [CartController::class, 'update'])->name('update.cart');
 Route::delete('/remove-from-cart', [CartController::class, 'remove'])->name('remove.from.cart');
