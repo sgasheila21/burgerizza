@@ -11,7 +11,8 @@
 
 @section('sub-content')
 @if (count($selectedCategory) > 0)
-  <form action="add-to-cart" method="POST">
+  <form action="{{ route('add-to-cart') }}" method="POST">
+    @csrf
     @for ($i = 0; $i < count($selectedCategory); $i++)
     <div class="accordion m-1 p-2 d-flex" id="accordionExample">
       <div class="accordion-item">

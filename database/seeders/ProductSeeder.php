@@ -88,5 +88,23 @@ class ProductSeeder extends Seeder
             'product_quantity' => 9999,
             'product_status' => 'active',
         ]);
+        DB::table('products')->insert([
+            'attribute_id' => 3,
+            'product_name' => 'MOZZARELLA',
+            'product_image_path' => null,
+            'product_description' => null,
+            'product_price' => 3000,
+            'product_quantity' => 9999,
+            'product_status' => 'active',
+        ]);
+        DB::table('products')->insert([
+            'attribute_id' => 3,
+            'product_name' => 'PARMIGIANO',
+            'product_image_path' => null,
+            'product_description' => null,
+            'product_price' => 4000,
+            'product_quantity' => 9999,
+            'product_status' => 'active',
+        ]);
     }
 }
