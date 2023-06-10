@@ -10,6 +10,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\TransactionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,4 +62,4 @@ Route::get('/cart', [CartController::class, 'cart'])->name('cart')->middleware('
 //transaction
 Route::get('/manage-transactions', [TransactionController::class, 'viewTransaction'])->middleware('mustAdmin');
 Route::get('/manage-transactions/{transaction_id}', [TransactionController::class, 'viewTransactionDetail'])->middleware('mustAdmin');
-Route::post('/pick-up', [TransactionController::class, 'pickUpTransaction'])->middleware('mustAdmin');
+Route::post('/pay', [TransactionController::class, 'payTransaction'])->middleware('mustAdmin');

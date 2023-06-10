@@ -29,8 +29,8 @@ return new class extends Migration
 
             $table->dateTime('transaction_date');
             $table->string('transaction_status')->nullable();
-            $table->dateTime('pick_up_date')->nullable();
-            $table->string('pick_up_status')->nullable();
+            $table->dateTime('payment_date')->nullable();
+            $table->string('payment_status')->nullable();
 
             $table->timestamps();
         });
