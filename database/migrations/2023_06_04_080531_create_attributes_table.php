@@ -24,7 +24,7 @@ return new class extends Migration
 
             $table->string('attribute_name');
             $table->integer('attribute_order');
-            $table->longText('attribute_description');
+            $table->longText('attribute_description')->nullable();
             $table->string('attribute_status'); // active or inactive
 
             $table->boolean('multiple_choice'); // true or false

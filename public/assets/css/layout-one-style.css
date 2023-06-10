@@ -101,10 +101,8 @@
 }
 
 @media screen and (max-width: 900px) {
-  ._lk_de{
-    flex-direction: column;
-  }
   .form-03-main{
-    width: 100%;
+    width: 50vh;
+    height: 50vh;
   }
 }

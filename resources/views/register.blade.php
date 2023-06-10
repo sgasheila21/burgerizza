@@ -26,6 +26,7 @@
           <label for="c_password">CONFIRM PASSWORD</label>
           <input type="password" name="c_password" class="form-control _ge_de_ol" placeholder="Input your confirm password here" required="" aria-required="true">
       </div>
+
       <div class="form-group">
         <button class="_btn_04" type="submit">
           <a>REGISTER</a>
