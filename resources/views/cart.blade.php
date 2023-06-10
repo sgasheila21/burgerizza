@@ -50,7 +50,7 @@
                           <?php
                            $cart_details = DB::table('cart_details')
                                           ->join('products', 'products.id', '=', 'cart_details.product_id')
-                                          ->select('products.id','product_name','product_image_path','product_description','product_price','cart_details.quantity','product_status')
+                                          ->select('products.id','quantity','product_name','product_image_path','product_description','product_price','cart_details.quantity','product_status')
                                           ->where('cart_details.cart_header_id', '=', $currproduct->id)->get();
                             ?>
                             
@@ -119,7 +119,8 @@
                               class="btn btn-danger btn-sm px-3 ms-2" 
                               data-mdb-toggle="tooltip"
                               title="Remove item"
-                              onclick="updateQuantity( {{ $currproduct->cart_id }}, 0 )"
+                              id="btnDeleteCart"
+                              onclick="deleteCart( {{ $currproduct->cart_id }})"
                             >
                             <i>
                               <span class="material-symbols-outlined"> delete </span>
