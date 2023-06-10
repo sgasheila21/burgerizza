@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Schema;
 
   
 
-class CreateCartHeaderTable extends Migration
+class CreateCartsTable extends Migration
 
 {
 
@@ -28,7 +28,7 @@ class CreateCartHeaderTable extends Migration
 
     {
 
-        Schema::create('chartheader', function (Blueprint $table) {
+        Schema::create('carts', function (Blueprint $table) {
 
             $table->id();
 
@@ -62,7 +62,7 @@ class CreateCartHeaderTable extends Migration
 
     {
 
-        Schema::dropIfExists('chartheader');
+        Schema::dropIfExists('carts');
 
     }
 

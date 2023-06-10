@@ -7,6 +7,7 @@ use App\Http\Controllers\CustomizeOrderController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CartController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,3 +41,12 @@ Route::get('/profile', [UserController::class, 'profile']);
 Route::post('/profile/updatepassword', [UserController::class, 'updatePassword'])->name('update-password');
 Route::post('/profile/editprofile', [UserController::class, 'editProfile'])->name('edit-profile');
 Route::post('/logout',[UserController::class, 'logout'])->middleware('mustLogin')->name('logout');
+
+
+//cart
+Route::get('/', [CartController::class, 'index']);  
+Route::get('cart', [CartController::class, 'cart'])->name('cart');
+Route::get('add-to-cart/{id}', [CartController::class, 'addToCart'])->name('add.to.cart');
+Route::patch('update-cart', [CartController::class, 'update'])->name('update.cart');
+Route::delete('remove-from-cart', [CartController::class, 'remove'])->name('remove.from.cart');
+

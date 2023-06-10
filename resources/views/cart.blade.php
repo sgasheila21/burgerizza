@@ -1,108 +1,106 @@
-@extends('template/layout-two')
+@extends('layout')
+@section('content')
+<table id="cart" class="table table-hover table-condensed">
+    <thead>
+        <tr>
+            <th style="width:50%">Product</th>
+            <th style="width:10%">Price</th
+            <th style="width:8%">Quantity</th>
+            <th style="width:22%" class="text-center">Subtotal</th>
+            <th style="width:10%"></th>
+        </tr>
 
-@section('title', 'Cart')
-@section('sub-content')
+    </thead>
 
-<h4 class="text-center py-3">Your Cart</h4>
-<div class="container bg-light mb-5 shadow" style="height:70vh">
-    <div class="row">
-        <div class="overflow-auto col-6 p-3" style="max-height:70vh;">
-            @php
-                $total_price = 0;
-                $total_qty = 0;
-            @endphp
-
-            @foreach($carts as $cart)
-                <div class="card mb-3" style="max-width: 540px;">
-                    <div class="row g-0">
-                        <div class="col-md-4" style="max-height: 24vh; overflow:hidden; display: flex; justify-content: center;">
-                            <img src="/products_image/{{ $cart->products->image }}" class="img-fluid rounded-start" alt="[ IMAGE ]">
+    <tbody>
+        @php $total = 0 @endphp
+        @if(session('cart'))
+            @foreach(session('cart') as $id => $details)
+                @php $total += $details['price'] * $details['quantity'] @endphp
+                <tr data-id="{{ $id }}">
+                    <td data-th="Product">
+                        <div class="row">
+                            <div class="col-sm-3 hidden-xs"><img src="{{ $details['image'] }}" width="100" height="100" class="img-responsive"/></div>
+                            <div class="col-sm-9">
+                                <h4 class="nomargin">{{ $details['name'] }}</h4>
+                            </div>
                         </div>
-                        <div class="col-md-8">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ $cart->products->name }}</h5>
-                            <p class="card-text"><b>Price: {{$cart->products->price}}</b></p>
-                            <form action="{{ route('update.quantity', ['id' => $cart->id ]) }}" method="POST">
-                                @csrf
-<div class="input-group">
-    <div class="input-group-prepend ms-1">
-        <button class="btn btn-danger trashBtn" name="trashBtn" type="submit" style="height: 5vh; width: 6vh; padding: 0">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
-                <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
-            </svg>
-        </button>
-    </div>
-    <div>
-        <input style="height: 5vh; width: 9vh" class="form-control text-center quantityInput" name="quantity" value="{{ old('quantity', $cart->quantity) }}" min="1">
-    </div>
-    <div class="input-group-append">
-        <button class="btn btn-danger decrementBtn" name="decrementBtn" type="submit" style="height: 5vh; width: 6vh; padding: 0">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-circle-fill" viewBox="0 0 16 16">
-                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4.5 7.5a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1h-7z"/>
-            </svg>
-        </button>
-        <button class="btn btn-primary incrementBtn" name="incrementBtn" type="submit" style="height: 5vh; width: 6vh; padding: 0">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
-                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
-            </svg>
-        </button>
-    </div>
-</div>
-</form>
-</div>
-</div>
-</div>
-</div>
+                    </td>
 
-@php
-    $total_price += ($cart->products->price * $cart->quantity); 
-    $total_qty += $cart->quantity;
-@endphp
-@endforeach
-</div>
+                    <td data-th="Price">${{ $details['price'] }}</td>
+                    <td data-th="Quantity">
+                        <input type="number" value="{{ $details['quantity'] }}" class="form-control quantity update-cart" />
+                    </td>
 
-<form action="{{ route('checkout') }}" method="POST" style="display: flex; flex-direction: column; align-items: center;">
-    @csrf
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul class="mb-0">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-    <button type="submit" class="btn btn-primary" style="width: 100%">Continue to payment</button>
-</form>
+                    <td data-th="Subtotal" class="text-center">${{ $details['price'] * $details['quantity'] }}</td>
+                    <td class="actions" data-th="">
+                        <button class="btn btn-danger btn-sm remove-from-cart"><i class="fa fa-trash-o"></i></button>
+                    </td>
+                </tr>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        var decrementButtons = document.querySelectorAll(".decrementBtn");
-        var incrementButtons = document.querySelectorAll(".incrementBtn");
-        var quantityInputs = document.querySelectorAll(".quantityInput");
+            @endforeach
 
-        decrementButtons.forEach(function(button, index) {
-            button.addEventListener("click", function() {
-                var quantityInput = quantityInputs[index];
-                var quantity = parseInt(quantityInput.value);
-                if (quantity > 1) {
-                    quantityInput.value = quantity - 1;
-                }
-            });
-        });
+        @endif
 
-        incrementButtons.forEach(function(button, index) {
-            button.addEventListener("click", function() {
-                var quantityInput = quantityInputs[index];
-                var quantity = parseInt(quantityInput.value);
-                quantityInput.value = quantity + 1;
-            });
-        });
-    });
-</script>
+    </tbody>
+
+    <tfoot>
+        <tr>
+            <td colspan="5" class="text-right"><h3><strong>Total ${{ $total }}</strong></h3></td>
+        </tr>
+
+        <tr>
+            <td colspan="5" class="text-right">
+                <a href="{{ url('/') }}" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a>
+                <button class="btn btn-success">Checkout</button>
+            </td>
+
+        </tr>
+    </tfoot>
+</table>
 @endsection
 
+  
 
+@section('scripts')
+<script type="text/javascript">
+    $(".update-cart").change(function (e) {
+        e.preventDefault();
+        var ele = $(this);
+        $.ajax({
+            url: '{{ route("update.cart") }}',
+            method: "patch",
+            data: {
+                _token: '{{ csrf_token() }}', 
+                id: ele.parents("tr").attr("data-id"), 
+                quantity: ele.parents("tr").find(".quantity").val()
+            },
 
+            success: function (response) {
+               window.location.reload();
+            }
 
+        });
 
+    });
+
+    $(".remove-from-cart").click(function (e) {
+        e.preventDefault();
+        var ele = $(this);
+        if(confirm("Are you sure want to remove?")) {
+            $.ajax({
+                url: '{{ route("remove.from.cart") }}',
+                method: "DELETE",
+                data: {
+                    _token: '{{ csrf_token() }}', 
+                    id: ele.parents("tr").attr("data-id")
+                },
+                success: function (response) {
+                    window.location.reload();
+                }
+            });
+        }
+    });
+
+</script>
+@endsection

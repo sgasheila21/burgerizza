@@ -1,42 +1,127 @@
 <?php
-
 namespace App\Http\Controllers;
-
-use App\Models\CartHeader;
 use Illuminate\Http\Request;
+use App\Models\Cart;
 
+  
 class CartController extends Controller
 {
-    public function quantityUpdate(Request $request, $id){
-        $cart = CartHeader::find($id);
-        if($request->has('decrementBtn') || $request->has('incrementBtn')){
-            $cart->quantity = $request->quantity;
-            $cart->save();
-        }
-        else if($request->has('trashBtn')){
-            $cart->delete();
-        }
+    /**
+     * Write code on Method
+     *
+     * @return response()
+     */
 
-        return redirect()->back();
+    public function index()
+
+    {
+        $carts = Cart::all();
+        return view('carts', compact('carts'));
     }
 
-    public function checkoutCart(Request $request){
-        $carts = CartHeader::where('member_id',auth()->user()->id)->get();
-        
-        foreach($carts as $cart){
-            $inserted = ChartHeader::create([
-                'User_id' => auth()->user()->id,
-                'product_id' => $cart->products->id,
-                'quantity' => $cart->quantity
-            ]);
+    /**
+     * Write code on Method
+     *
+     * @return response()
+     */
 
-            $deleted = $cart->delete();
-        }
-        if($inserted && $deleted){
-            return redirect('/products')->with('success', 'Checkout Successfully!');
-        }
-        else{
-            return redirect('/products')->with('failure', 'Failed to Checkout!');
-        }
+    public function cart()
+    {
+
+        return view('cart');
+
     }
+
+    /**
+     * Write code on Method
+     *
+     * @return response()
+     */
+
+    public function addToCart($id)
+    {
+
+        $cart = Cart::findOrFail($id);
+        $cart = session()->get('cart', []);
+
+        if(isset($cart[$id])) {
+
+            $cart[$id]['quantity']++;
+
+        } else {
+            $cart[$id] = [
+                "name" => $cart->name,
+                "quantity" => 1,
+                "price" => $cart->price,
+                "image" => $cart->image
+            ];
+        }
+
+        session()->put('cart', $cart);
+        return redirect()->back()->with('success', 'Product added to cart successfully!');
+    }
+
+  
+    /**
+
+     * Write code on Method
+
+     *
+
+     * @return response()
+
+     */
+
+    public function update(Request $request)
+
+    {
+
+        if($request->id && $request->quantity){
+
+            $cart = session()->get('cart');
+
+            $cart[$request->id]["quantity"] = $request->quantity;
+
+            session()->put('cart', $cart);
+
+            session()->flash('success', 'Cart updated successfully');
+
+        }
+
+    }
+
+  
+
+    /**
+
+     * Write code on Method
+
+     *
+
+     * @return response()
+
+     */
+
+    public function remove(Request $request)
+
+    {
+
+        if($request->id) {
+
+            $cart = session()->get('cart');
+
+            if(isset($cart[$request->id])) {
+
+                unset($cart[$request->id]);
+
+                session()->put('cart', $cart);
+
+            }
+
+            session()->flash('success', 'Product removed successfully');
+
+        }
+
+    }
+
 }
