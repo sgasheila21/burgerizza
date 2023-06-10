@@ -32,18 +32,37 @@
                       $totalItems = 0
                     ?>
                     @foreach ($cart as $currproduct)
+                        @php
+                            $product_price_total = 0
+                        @endphp
                       <div class="row pt-4 w-100">
                         <div class="col-lg-5 col-md-6 mb-4 mb-lg-0">
-                          <p><strong>{{ $currproduct->category_name }}</strong></p>
-                          <p><strong>Price : {{ $currproduct->product_price }}</strong></p>
-  
-                         <?php
+                          <?php
                            $cart_details = DB::table('cart_details')
                                           ->join('products', 'products.id', '=', 'cart_details.product_id')
                                           ->select('products.id','product_name','product_image_path','product_description','product_price','product_quantity','product_status')
-                                          ->where('cart_details.cart_header_id', '=', $currproduct->id)
-                                          ->get();
-                         ?>
+                                          ->where('cart_details.cart_header_id', '=', $currproduct->id)->get();
+                            ?>
+                            
+                            @foreach($cart_details as $cart_detail)
+                                @php
+                                    $product_price_total += ($cart_detail->product_quantity * $cart_detail->product_price);
+                                @endphp
+                            @endforeach
+                            
+                            @php
+                                $total += ($currproduct->quantity * $product_price_total);
+                            @endphp
+
+                        <p><strong>{{ $currproduct->category_name }}</strong></p>
+                        <p><strong>Price : Rp{{ $product_price_total }}</strong></p>
+
+                        <div>
+                            @foreach($cart_details as $cart_detail)
+                                <p>{{ $cart_detail->product_name }} (Qty: {{ $cart_detail->product_quantity }}, Price: {{ $cart_detail->product_price }})</p>
+                            @endforeach
+                        </div>
+
                           <div class="d-flex mb-4" style="max-width: 300px">
                             <button class="btn btn-primary px-3 me-2"
                               type="button"
@@ -102,7 +121,6 @@
                       </div>
 
                       <?php 
-                        $total += $currproduct->subtotal ;
                         $totalItems += $currproduct->quantity 
                       ?>
                     @endforeach
