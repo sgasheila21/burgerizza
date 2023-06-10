@@ -31,8 +31,11 @@ Route::get('/customize-order/{category_name}', [CustomizeOrderController::class,
 
 Route::get('{attribute_id}/product/{product_id}', [ProductController::class, 'index'])->middleware('mustAdmin');
 Route::post('{attribute_id}/product/{product_id}', [ProductController::class, 'postProduct'])->middleware('mustAdmin');
+Route::get('{attribute_id}/product/{product_id}/delete', [ProductController::class, 'deleteProduct'])->middleware('mustAdmin');
 
 Route::get('{category_id}/attribute/{attribute_id}', [AttributeController::class, 'index'])->middleware('mustAdmin');
+Route::post('{category_id}/attribute/{attribute_id}', [AttributeController::class, 'postAttribute'])->middleware('mustAdmin');
+Route::get('{category_id}/attribute/{attribute_id}/delete', [AttributeController::class, 'deleteAttribute'])->middleware('mustAdmin');
 
 Route::get('/login', [LoginController::class, 'index']);
 Route::post('/login', [LoginController::class, 'validation'])->name('login-validation');

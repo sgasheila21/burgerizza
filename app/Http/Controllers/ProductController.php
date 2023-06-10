@@ -48,7 +48,7 @@ class ProductController extends Controller
         $categories = Category::all()->where( strtolower('category_status'), '=', 'active');
         $attribute_id = $request->attribute_id;
         $product_id = $request->product_id;
-
+        
         if(is_null($request['product_image'])){
             unset($request['product_image']);
         }
@@ -70,21 +70,18 @@ class ProductController extends Controller
             'product_stock.min' => 'The Product Stock field can not negative',
         ]);
 
-
-        dd($request->product_image);
+        
         if($product_id == "add"){
-            // dd($request);
-
-            Product::insert([
-                    'attribute_id' => $attribute_id,
-                    // 'product_image_path' => $attribute_id,
-                    'product_name' => $request->product_name,
-                    'product_description' => $request->product_description,
-                    'product_price' => $request->product_price,
-                    'product_quantity' => $request->product_stock,
-                    'product_status' => $request->product_status == null ? "inactive" : "active",
-                ]);
-
+            $product = Product::create([
+                'attribute_id' => $attribute_id,
+                // 'product_image' => $attribute_id,
+                'product_name' => $request->product_name,
+                'product_description' => $request->product_description,
+                'product_price' => $request->product_price,
+                'product_quantity' => $request->product_stock,
+                'product_status' => $request->product_status == null ? "inactive" : "active",
+            ]);
+            
             session()->put("success", "Success to add the product!");
         }
         else {
@@ -97,34 +94,64 @@ class ProductController extends Controller
                 $product->product_quantity =  $request->product_stock;
                 $product->product_status =  $request->product_status == null ? "inactive" : "active";
     
-                dd($request->product_image_path);
-                if($request->product_image_path != null){
-                    $path = $request->product_image_path->move('products/product_image/', $product_id);
-                    $link=url('products/product_image/'.$product_id);
-            
-                    $product->product_image_path = $link;
-            
-                    dd($link);
-                }
-
                 $product->save();
-    
+                
                 session()->put("success", "Success to update the product!");
             }
             else {
                 session()->put("error", "Product not found!");
             }
         }
-
-        $product=[];
+        
+        if($request->product_image != null){
+            $path = $request->product_image->move('products/images/product_id/', $product->id);
+            $link=url('products/images/product_id/'.$product->id);
+            
+            $product->product_image_path = $link;
+        }
+        
+        $product->save();
+        
         $attribute = Attribute::findOrFail($attribute_id);
         $category = Category::findOrFail($attribute->category_id);
         
         return redirect( "customize-order/". Str::lower(str_replace(' ', '', $category->category_name)) )
-                ->with('categories',$categories)
-                ->with('product_id',$product_id)
-                ->with('attribute_id',$attribute_id)
-                ->with('product',$product)
-                ;
+                            ->with('categories',$categories)
+                            ->with('product_id',$product_id)
+                            ->with('attribute_id',$attribute_id)
+                            ->with('product',$product)
+        ;
+    }
+    public function deleteProduct(Request $request){
+        $attribute_id = $request->attribute_id;
+        $product_id = $request->product_id;
+
+        $product = Product::select(
+                        'id',
+                        'attribute_id',
+                        'product_name',
+                        'product_image_path',
+                        'product_description',
+                        'product_price',
+                        'product_quantity',
+                        'product_status'
+                        )->where('attribute_id', '=', $attribute_id)
+                        ->where('id', '=', $product_id)
+                    ->delete();
+
+                    session()->put('success','Success to delete product!');
+                    
+        // $categories = Category::all()->where( strtolower('category_status'), '=', 'active');
+        // $attribute = Attribute::findOrFail($attribute_id);
+        // $category = Category::findOrFail($attribute->category_id);
+        
+        // return redirect( "customize-order/". Str::lower(str_replace(' ', '', $category->category_name)) )
+        //                      ->with('categories',$categories)
+        //                      ->with('product_id',$product_id)
+        //                      ->with('attribute_id',$attribute_id)
+        //                      ->with('product',$product)
+        // ;
+
+        return redirect()->back();
     }
 }
