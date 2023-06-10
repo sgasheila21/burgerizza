@@ -14,6 +14,16 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
 
 @section('sub-content')
+  @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul class="mb-0">
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+  @endif
+
   <section class="h-100" id="cart">
       <div class="container py-5">
         <div class="row my-4">
@@ -183,6 +193,9 @@
                       <div class="py-3 text-center">
                         <h4 class="mb-0 text-danger">You have no Delivery Address.</h4>
                         <h4 class="mb-0">Click <a href="{{ url('profile') }}">here</a> to Add Delivery Address.</h4>
+                        <select class="form-select" id="deliveryAddress" name="deliveryAddress" hidden>
+                          <option value=null @checked(true)></option>
+                        </select>
                       </div>
                       @endif
   

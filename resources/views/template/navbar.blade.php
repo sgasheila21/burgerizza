@@ -37,11 +37,13 @@
             <img src="{{ asset('assets/icon/user_icon.svg') }}" alt="user">
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link ms-0 ps-0" href="{{ url('cart') }}">
-            <img src="{{ asset('assets/icon/shopping_cart_icon.svg') }}" alt="shopping cart">
-          </a>
-        </li>
+        @if (auth()->user()->role->name == "Customer")
+          <li class="nav-item">
+            <a class="nav-link ms-0 ps-0" href="{{ url('cart') }}">
+              <img src="{{ asset('assets/icon/shopping_cart_icon.svg') }}" alt="shopping cart">
+            </a>
+          </li>
+        @endif
       </ul>
     </div>
   </div>

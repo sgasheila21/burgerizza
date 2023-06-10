@@ -19,60 +19,24 @@ class CartController extends Controller
 
         $cart = CartHeader::join('categories', 'categories.id', '=', 'cart_headers.category_id')
             ->select('cart_headers.id','user_id','category_id','category_name','quantity')
-            ->where('user_id','=',$profile->id)->get();
+            ->where('user_id','=',$profile->id)
+            ->get();
                             
         return view('cart', compact([
             'categories','cart','user_addresses'
         ]));
     }
-
-    public function addToCart($id)
-    {
-        $cart = Cart::findOrFail($id);
-        $cart = session()->get('cart', []);
-
-        if(isset($cart[$id])) {
-
-            $cart[$id]['quantity']++;
-
-        } else {
-            $cart[$id] = [
-                "name" => $cart->name,
-                "quantity" => 1,
-                "price" => $cart->price,
-                "image" => $cart->image
-            ];
-        }
-
-        session()->put('cart', $cart);
-        return redirect()->back()->with('success', 'Product added to cart successfully!');
-    }
-
-    public function update(Request $request)
-    {
-        if($request->id && $request->quantity){
-            $cart = session()->get('cart');
-            $cart[$request->id]["quantity"] = $request->quantity;
-            session()->put('cart', $cart);
-            session()->flash('success', 'Cart updated successfully');
-        }
-    }
-
-    public function remove(Request $request)
-    {
-        if($request->id) {
-            $cart = session()->get('cart');
-            if(isset($cart[$request->id])) {
-                unset($cart[$request->id]);
-                session()->put('cart', $cart);
-            }
-            
-            session()->flash('success', 'Product removed successfully');
-            
-        }
-    }
     
     public function goToPayment(Request $request){
-        dd($request);
+        if(request()->deliveryAddress == "null"){
+            return redirect()->back()
+                ->withErrors('
+                    You must set your delivery address first to continue to payment.
+                    Go to Profile to Add Your Delivery Address.
+                ')
+                ->withInput();
+        }
+        
+        return redirect('payment');
     }
 }

@@ -2,15 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
+use App\Models\PaymentMethod;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PaymentController extends Controller
 {
     public function index()
     {
-        $paymentMethods = PaymentMethod::all();
+        $profile = Auth ::user();
+        $categories = Category::all()->where( strtolower('category_status'), '=', 'active');
+        $paymentMethods = PaymentMethod::all()->where(strtolower("payment_methods_status"),"=","active");
 
-        return view('payment.index', compact('paymentMethods'));
+        return view('payment', compact('paymentMethods','profile','categories'));
     }
 
     public function process(Request $request)
