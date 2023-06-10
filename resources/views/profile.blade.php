@@ -35,7 +35,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     @endif
-    
+
     <div class="form-03-main overflow-auto">
         <form action="{{ url('logout') }}" method="POST">
             @csrf
@@ -77,6 +77,43 @@
         </div>
     </form>
 
+    <br>
+
+    <form class="form-03-main overflow-auto" action="{{ route('update-password') }}" method="POST">
+        <h1>Update Password</h1>
+        @csrf
+        <div class="form-group">
+            <label for="o_password">OLD PASSWORD</label>
+            <input type="password" name="o_password" class="form-control _ge_de_ol" placeholder="Input your password here" required="" aria-required="true">
+        </div>
+        <div class="form-group">
+            <label for="n_password">NEW PASSWORD</label>
+            <input type="password" name="n_password" class="form-control _ge_de_ol" placeholder="Input your password here" required="" aria-required="true">
+        </div>
+        <div class="form-group">
+            <label for="cn_password">CONFIRM NEW PASSWORD</label>
+            <input type="password" name="cn_password" class="form-control _ge_de_ol" placeholder="Input your confirm password here" required="" aria-required="true">
+        </div>
+        <br>
+        <div class="form-group">
+        <button class="_btn_04" type="submit">
+            Change Password
+        </button>
+
+        @if ($errors->errors_password->any())
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach ($errors->errors_password->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        </div>
+    </form>
+
+    @if(auth()->user()->role->name == "Customer")
     <br>
 
     <div class="form-03-main overflow-auto">
@@ -207,4 +244,5 @@
         <hr>
         @endforeach
     </div>
+    @endif
 @endsection {{-- end of sub-content section--}}
