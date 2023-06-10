@@ -16,19 +16,6 @@ class CartController extends Controller
      * @return response()
      */
 
-    public function index()
-    {
-        $categories = Category::all()->where( strtolower('category_status'), '=', 'active');
-        $carts = CartHeader::all();
-        return view('cart', compact('carts'))->with('categories',$categories);
-    }
-
-    /**
-     * Write code on Method
-     *
-     * @return response()
-     */
-
     public function cart()
     {
         $profile = Auth::user();
@@ -37,20 +24,13 @@ class CartController extends Controller
         $user_addresses = Address::all()->where('user_id','=',$profile->id);
 
         $cart = CartHeader::join('categories', 'categories.id', '=', 'cart_headers.category_id')
-                        ->select('user_id','category_id','category_name','quantity')
-                        ->where('user_id','=',$profile->id)
-                        ->get();
+            ->select('cart_headers.id','user_id','category_id','category_name','quantity')
+            ->where('user_id','=',$profile->id)->get();
                             
         return view('cart', compact([
             'categories','cart','user_addresses'
         ]));
     }
-
-    /**
-     * Write code on Method
-     *
-     * @return response()
-     */
 
     public function addToCart($id)
     {
@@ -75,17 +55,6 @@ class CartController extends Controller
         return redirect()->back()->with('success', 'Product added to cart successfully!');
     }
 
-
-    /**
-
-     * Write code on Method
-
-     *
-
-     * @return response()
-
-     */
-
     public function update(Request $request)
 
     {
@@ -103,18 +72,6 @@ class CartController extends Controller
         }
 
     }
-
-
-
-    /**
-
-     * Write code on Method
-
-     *
-
-     * @return response()
-
-     */
 
     public function remove(Request $request)
 
