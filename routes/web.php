@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AboutUsController;
+use App\Http\Controllers\AddressController;
 use App\Http\Controllers\CustomizeOrderController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
@@ -27,16 +28,22 @@ Route::get('/about-us', [AboutUsController::class, 'index'])->middleware('mustLo
 
 Route::get('/customize-order/{category_name}', [CustomizeOrderController::class, 'index'])->middleware('mustLogin');
 
+//login
 Route::get('/login', [LoginController::class, 'index']);
 Route::post('/login', [LoginController::class, 'validation'])->name('login-validation');
 
-Route::get('/logout', [UserController::class, 'logout'])->middleware('mustLogin');;
+//logout
+Route::get('/logout', [UserController::class, 'logout'])->middleware('mustLogin');
+Route::post('/logout',[UserController::class, 'logout'])->middleware('mustLogin')->name('logout');
 
+//register
 Route::get('/register', [RegisterController::class, 'index']);
 Route::post('/register', [RegisterController::class, 'validation'])->name('register-validation');
+Route::post('/address/add', [AddressController::class, 'address'])->name('add-address');
 
 //profile
 Route::get('/profile', [UserController::class, 'profile']);
 Route::post('/profile/updatepassword', [UserController::class, 'updatePassword'])->name('update-password');
 Route::post('/profile/editprofile', [UserController::class, 'editProfile'])->name('edit-profile');
-Route::post('/logout',[UserController::class, 'logout'])->middleware('mustLogin')->name('logout');
+Route::post('/profile/address/edit/{id}', [AddressController::class, 'editAddress'])->name('edit-address');
+Route::post('/profile/address/delete/{id}', [AddressController::class, 'deleteAddress'])->name('delete-address');
