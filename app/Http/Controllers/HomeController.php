@@ -10,7 +10,6 @@ class HomeController extends Controller
     // index
     public function index(){
         $categories = Category::all()->where( strtolower('category_status'), '=', 'active');
-        return view('home')
-                ->with('categories',$categories);
+        return view('home')->with('categories',$categories);
     }
 }
