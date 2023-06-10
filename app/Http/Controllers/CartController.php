@@ -2,8 +2,9 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Cart;
+use App\Models\CartHeader;
+use App\Models\Category;
 
-  
 class CartController extends Controller
 {
     /**
@@ -13,10 +14,10 @@ class CartController extends Controller
      */
 
     public function index()
-
     {
-        $carts = Cart::all();
-        return view('carts', compact('carts'));
+        $categories = Category::all()->where( strtolower('category_status'), '=', 'active');
+        $carts = CartHeader::all();
+        return view('cart', compact('carts'))->with('categories',$categories);
     }
 
     /**

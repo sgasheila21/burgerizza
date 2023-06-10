@@ -1,4 +1,6 @@
-@extends('layout')
+@extends('template/layout-two')
+@section('title', 'CART')
+
 @section('content')
 <table id="cart" class="table table-hover table-condensed">
     <thead>

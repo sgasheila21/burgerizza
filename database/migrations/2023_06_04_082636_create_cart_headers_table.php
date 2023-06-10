@@ -1,69 +1,46 @@
 <?php
 
-  
-
 use Illuminate\Database\Migrations\Migration;
-
 use Illuminate\Database\Schema\Blueprint;
-
 use Illuminate\Support\Facades\Schema;
 
-  
-
-class CreateCartHeaderTable extends Migration
-
+return new class extends Migration
 {
-
     /**
-
      * Run the migrations.
-
      *
-
      * @return void
-
      */
-
     public function up()
-
     {
-
-        Schema::create('chartheader', function (Blueprint $table) {
-
+        Schema::create('cart_headers', function (Blueprint $table) {
             $table->id();
 
-            $table->string("name", 255)->nullable();
+            $table->unsignedBigInteger("user_id");
+            $table->foreign("user_id")
+                    ->references("id")
+                    ->on("users")
+                    ->onDelete("cascade");
 
-            $table->text("description")->nullable();
+            $table->unsignedBigInteger("category_id");
+            $table->foreign("category_id")
+                    ->references("id")
+                    ->on("categories")
+                    ->onDelete("cascade");
 
-            $table->string("image", 255)->nullable();
-
-            $table->decimal("price", 6, 2);
+            $table->integer('quantity');
 
             $table->timestamps();
-
         });
-
     }
-
- 
 
     /**
-
      * Reverse the migrations.
-
      *
-
      * @return void
-
      */
-
     public function down()
-
     {
-
-        Schema::dropIfExists('chartheader');
-
+        Schema::dropIfExists('cart_headers');
     }
-
-}
+};
