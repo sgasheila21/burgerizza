@@ -33,7 +33,9 @@
                   $products=$products->get();
               }
             ?>
-            @if (count($products)>0)
+            
+
+        @if (count($products)>0)
             @for ($i2 = 0; $i2 < count($products); $i2++)
                 <div class="accordion-body" style="width: 40vh;">
                   <div class="card p-2">
@@ -85,9 +87,11 @@
                           </div>
                         @else
                           <div class="qty " style="text-align-last:center;">
-                            <input name="product_selected{{$products[$i2]->id}}" type="checkbox" class="form-check-input"
-                            @checked(false)
-                            >
+                            {{-- <input name="product_selected{{$products[$i2]->id}}" type="checkbox" class="form-check-input"
+                            @checked(false) --}}
+                            
+                        <input name="$selectedCategory[$i]->attribute_id" type="radio" class="form-check-input" value="{{$products[$i2]->id}}">
+                        
                           </div>
                         @endif
                       @elseif($profile->role_id == 2) {{-- if Role = Admin --}}
