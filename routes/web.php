@@ -56,3 +56,7 @@ Route::get('/add-to-cart/{id}', [CartController::class, 'addToCart'])->name('add
 Route::patch('/update-cart', [CartController::class, 'update'])->name('update.cart');
 Route::delete('/remove-from-cart', [CartController::class, 'remove'])->name('remove.from.cart');
 
+//transaction
+Route::get('/manage-transactions', [TransactionController::class, 'viewTransaction'])->middleware('mustAdmin');
+Route::get('/manage-transactions/{transaction_id}', [TransactionController::class, 'viewTransactionDetail'])->middleware('mustAdmin');
+Route::post('/pick-up', [TransactionController::class, 'pickUpTransaction'])->middleware('mustAdmin');
