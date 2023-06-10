@@ -22,6 +22,7 @@ return new class extends Migration
                         ->on("cart_headers")
                         ->onDelete("cascade");
 
+            $table->integer('product_id');
             $table->integer('quantity');
 
             $table->timestamps();

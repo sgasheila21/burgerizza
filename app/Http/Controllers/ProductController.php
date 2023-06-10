@@ -49,21 +49,29 @@ class ProductController extends Controller
         $attribute_id = $request->attribute_id;
         $product_id = $request->product_id;
 
+        if(is_null($request['product_image'])){
+            unset($request['product_image']);
+        }
+    
+        // dd($request->product_image);
         $validateData = $request->validate([
             'product_name' => 'required|max:100',
-            // 'product_image' => 'required',
+            'product_image' => 'sometimes|required|image|mimes:jpeg,jpg,png|max:10240',
             'product_price' => 'required',
             'product_stock' => 'required|min:0',
         ],
         [
             'product_name.required' => 'The Product Name field is required',
             'product_name.max' => 'The maximum length of Product Name field is 100 characters.',
-            // 'product_image.required' => 'The product image field is required.',
+            'product_image.image' => 'The product image must be an image file.',
+            'product_image.max' => 'The product image file size must be under 10MB.',
             'product_price.required' => 'The Product Price field is required.',
             'product_stock.required' => 'The Product Stock field is required',
             'product_stock.min' => 'The Product Stock field can not negative',
         ]);
-        
+
+
+        dd($request->product_image);
         if($product_id == "add"){
             // dd($request);
 
@@ -89,6 +97,16 @@ class ProductController extends Controller
                 $product->product_quantity =  $request->product_stock;
                 $product->product_status =  $request->product_status == null ? "inactive" : "active";
     
+                dd($request->product_image_path);
+                if($request->product_image_path != null){
+                    $path = $request->product_image_path->move('products/product_image/', $product_id);
+                    $link=url('products/product_image/'.$product_id);
+            
+                    $product->product_image_path = $link;
+            
+                    dd($link);
+                }
+
                 $product->save();
     
                 session()->put("success", "Success to update the product!");

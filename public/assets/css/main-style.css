@@ -8,3 +8,6 @@
   src: url(../fonts/JacquesFrancois-Regular.ttf);
   font-weight: bold;
 }
+body{
+  font-size: 12px;
+}

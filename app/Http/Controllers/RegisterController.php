@@ -59,7 +59,17 @@ class RegisterController extends Controller
             ]);
 
             session()->put('success', 'Your account is successfully registered!');
-            return view('home', compact('customer'))->with('categories',$categories);
+            
+            if(Auth::attempt([ 
+                'email' => $request->email, 
+                'password' => $request->password 
+            ])){ 
+                session()->put('success','Login Success!');
+                return redirect('/home');
+            }
+            else { //login gagal
+                return redirect('/login')->withInput();
+            }
         }
     }
 }

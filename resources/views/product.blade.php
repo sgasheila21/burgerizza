@@ -30,12 +30,12 @@
         <div id="product_name_Help" class="form-text">Product Description will be showed in Customized Order Product's Card. Thus please keep it short. *ex: Servings: 4</div>
       </div>
       <div class="mb-3">
-        <label for="product_image" class="form-label">Product Image</label>
+        <label for="product_image_path" class="form-label">Product Image</label>
         @if (count($product) > 0) 
           <br/>
-          <img name="product_image_path" src="{{ $product[0]->product_image_path }}" alt="{{ $product[0]->product_name }} Product Image" srcset="">
+          <img name="show_product_image" src="{{ $product[0]->product_image_path }}" alt="{{ $product[0]->product_name }} Product Image" srcset="">
         @endif
-        <input class="form-control" type="file" id="product_image" name="product_image">
+        <input type="file" class="form-control" id="product_image" name="product_image">
       </div>
       <div class="mb-3">
         <label for="product_price" class="form-label">Product Price</label>
