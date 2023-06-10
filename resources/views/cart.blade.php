@@ -40,13 +40,13 @@
                           <?php
                            $cart_details = DB::table('cart_details')
                                           ->join('products', 'products.id', '=', 'cart_details.product_id')
-                                          ->select('products.id','product_name','product_image_path','product_description','product_price','product_quantity','product_status')
+                                          ->select('products.id','quantity','product_name','product_image_path','product_description','product_price','product_quantity','product_status')
                                           ->where('cart_details.cart_header_id', '=', $currproduct->id)->get();
                             ?>
                             
                             @foreach($cart_details as $cart_detail)
                                 @php
-                                    $product_price_total += ($cart_detail->product_quantity * $cart_detail->product_price);
+                                    $product_price_total += ($cart_detail->quantity * $cart_detail->product_price);
                                 @endphp
                             @endforeach
                             
@@ -59,7 +59,7 @@
 
                         <div>
                             @foreach($cart_details as $cart_detail)
-                                <p>{{ $cart_detail->product_name }} (Qty: {{ $cart_detail->product_quantity }}, Price: {{ $cart_detail->product_price }})</p>
+                                <p>{{ $cart_detail->product_name }} (Qty: {{ $cart_detail->quantity }}, Price: {{ $cart_detail->product_price }})</p>
                             @endforeach
                         </div>
 
@@ -109,7 +109,8 @@
                               class="btn btn-danger btn-sm px-3 ms-2" 
                               data-mdb-toggle="tooltip"
                               title="Remove item"
-                              onclick="updateQuantity( {{ $currproduct->cart_id }}, 0 )"
+                              id="btnDeleteCart"
+                              onclick="deleteCart( {{ $currproduct->cart_id }})"
                             >
                             <i>
                               <span class="material-symbols-outlined"> delete </span>
