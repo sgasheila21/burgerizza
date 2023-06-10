@@ -13,6 +13,7 @@ class Attribute extends Model
         'category_id',
         'attribute_name',
         'attribute_description',
+        'attribute_order',
         'attribute_status',
         'multiple_choice',
     ];

@@ -11,6 +11,7 @@ class CartDetail extends Model
     
     protected $fillable = [
         'cart_header_id',
+        'product_id',
         'quantity',
     ];
 }

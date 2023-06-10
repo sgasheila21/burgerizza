@@ -17,7 +17,7 @@ class MustAdmin
      */
     public function handle(Request $request, Closure $next)
     {
-        if(!Auth::user()->role_id != 2 /* 2=admin */){
+        if(Auth::user()->role_id != 2 /* 2=admin */){
             return redirect('home');
         }
 

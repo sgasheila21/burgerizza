@@ -69,6 +69,10 @@ a.nav-link {
     font-family: "Jockey One";
     border-radius: 35px;
 
+    .accordion-item{
+        width: 98%;
+    }
+
     .accordion-collapse{
         display: flex;
         flex-direction: row;

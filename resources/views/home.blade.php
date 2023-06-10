@@ -31,10 +31,13 @@
                 <a class="brown-text" href="{{ url('home') }}">order now!</a>
             </p>
         </div>
-        <div class="button-home-page">
-            <button>CUSTOM PIZZA</button>
-            <button>CUSTOM BURGER</button>
-            <button>ORDER DRINK</button>
+        <div class="button-home-page d-block text-center">
+            @foreach ($categories as $category )
+            <button type="button" onclick="window.location='{{ url('customize-order/'.Str::lower(str_replace(' ', '', $category->category_name))) }}'">
+                CUSTOM 
+                {{ Str::upper($category->category_name) }}
+            </button>
+            @endforeach
         </div>
     </div>
 
