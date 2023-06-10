@@ -10,6 +10,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\TransactionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,3 +60,7 @@ Route::get('/cart', [CartController::class, 'cart'])->name('cart')->middleware('
 // Route::patch('/update-cart', [CartController::class, 'update'])->name('update.cart');
 // Route::delete('/remove-from-cart', [CartController::class, 'remove'])->name('remove.from.cart');
 
+//transaction
+Route::get('/manage-transactions', [TransactionController::class, 'viewTransaction'])->middleware('mustAdmin');
+Route::get('/manage-transactions/{transaction_id}', [TransactionController::class, 'viewTransactionDetail'])->middleware('mustAdmin');
+Route::post('/pay', [TransactionController::class, 'payTransaction'])->middleware('mustAdmin');
