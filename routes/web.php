@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AboutUsController;
-use App\Http\Controllers\AttributeController;
 use App\Http\Controllers\CustomizeOrderController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProductController;
@@ -29,24 +28,21 @@ Route::get('/about-us', [AboutUsController::class, 'index'])->middleware('mustLo
 
 Route::get('/customize-order/{category_name}', [CustomizeOrderController::class, 'index'])->middleware('mustLogin');
 
-Route::get('{attribute_id}/product/{product_id}', [ProductController::class, 'index'])->middleware('mustAdmin');
-Route::post('{attribute_id}/product/{product_id}', [ProductController::class, 'postProduct'])->middleware('mustAdmin');
-Route::get('{attribute_id}/product/{product_id}/delete', [ProductController::class, 'deleteProduct'])->middleware('mustAdmin');
-
-Route::get('{category_id}/attribute/{attribute_id}', [AttributeController::class, 'index'])->middleware('mustAdmin');
-Route::post('{category_id}/attribute/{attribute_id}', [AttributeController::class, 'postAttribute'])->middleware('mustAdmin');
-Route::get('{category_id}/attribute/{attribute_id}/delete', [AttributeController::class, 'deleteAttribute'])->middleware('mustAdmin');
-
 Route::get('/login', [LoginController::class, 'index']);
 Route::post('/login', [LoginController::class, 'validation'])->name('login-validation');
 
-Route::get('/logout', [UserController::class, 'logout'])->middleware('mustLogin');;
+//logout
+Route::get('/logout', [UserController::class, 'logout'])->middleware('mustLogin');
+Route::post('/logout',[UserController::class, 'logout'])->middleware('mustLogin')->name('logout');
 
+//register
 Route::get('/register', [RegisterController::class, 'index']);
 Route::post('/register', [RegisterController::class, 'validation'])->name('register-validation');
+Route::post('/address/add', [AddressController::class, 'address'])->name('add-address');
 
 //profile
 Route::get('/profile', [UserController::class, 'profile']);
 Route::post('/profile/updatepassword', [UserController::class, 'updatePassword'])->name('update-password');
 Route::post('/profile/editprofile', [UserController::class, 'editProfile'])->name('edit-profile');
-Route::post('/logout',[UserController::class, 'logout'])->middleware('mustLogin')->name('logout');
+Route::post('/profile/address/edit/{id}', [AddressController::class, 'editAddress'])->name('edit-address');
+Route::post('/profile/address/delete/{id}', [AddressController::class, 'deleteAddress'])->name('delete-address');

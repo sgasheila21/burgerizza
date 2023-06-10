@@ -4,7 +4,7 @@
 @section('sub-content')
   <div class="_lk_de">
     <div class="form-03-main bg_burgerizza"></div>
-    <form class="h-100 form-03-main overflow-auto" action="{{ route('register-validation') }}" method="POST">
+    <form class="form-03-main overflow-auto" action="{{ route('register-validation') }}" method="POST">
       @csrf
       <div class="form-group">
           <label for="username">USERNAME</label>
@@ -26,9 +26,10 @@
           <label for="c_password">CONFIRM PASSWORD</label>
           <input type="password" name="c_password" class="form-control _ge_de_ol" placeholder="Input your confirm password here" required="" aria-required="true">
       </div>
+
       <div class="form-group">
         <button class="_btn_04" type="submit">
-          <a href="#">REGISTER</a>
+          <a>REGISTER</a>
         </button>
 
         @if ($errors->any())

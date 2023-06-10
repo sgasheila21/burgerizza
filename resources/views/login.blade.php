@@ -15,9 +15,10 @@
           <label for="password">PASSWORD</label>
           <input type="password" name="password" class="form-control _ge_de_ol" type="text" placeholder="Input your password here" required="" aria-required="true" value="{{ old('password') }}">
       </div>
+      
       <div class="form-group">
-        <button class="_btn_04" type="submit">
-          <a href="#">LOGIN</a>
+        <button class="_btn_04" type="submit" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">
+          LOGIN
         </button>
 
         @if ($errors->any())

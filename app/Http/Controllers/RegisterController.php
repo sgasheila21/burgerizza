@@ -6,7 +6,6 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class RegisterController extends Controller
 {
@@ -48,8 +47,6 @@ class RegisterController extends Controller
             return back()->withErrors(['message' => "Your password and confirm password doesn't match"])->withInput();
         }
         else if (is_null($customer) && $request->password == $request->c_password){
-            $categories = Category::all()->where( strtolower('category_status'), '=', 'active');
-            
             DB::table('users')->insert([
                 'username' => $request->username,
                 'email' => $request->email,
@@ -58,18 +55,7 @@ class RegisterController extends Controller
                 'role_id' => 1
             ]);
 
-            session()->put('success', 'Your account is successfully registered!');
-            
-            if(Auth::attempt([ 
-                'email' => $request->email, 
-                'password' => $request->password 
-            ])){ 
-                session()->put('success','Login Success!');
-                return redirect('/home');
-            }
-            else { //login gagal
-                return redirect('/login')->withInput();
-            }
+            return view('home', compact('customer'))->withErrors(['success' => 'Your account is successfully registered!']);
         }
     }
 }
