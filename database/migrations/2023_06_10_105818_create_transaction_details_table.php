@@ -15,6 +15,16 @@ return new class extends Migration
     {
         Schema::create('transaction_details', function (Blueprint $table) {
             $table->id();
+            // $table->bigIncrements('transaction_detail_id');
+            
+            $table->unsignedBigInteger("transaction_id");
+            $table->foreign("transaction_id")
+                    ->references("id")
+                    ->on("transaction_headers")
+                    ->onDelete("cascade");
+            
+            $table->unsignedBigInteger("product_id");
+            $table->integer('quantity');
 
             
 
