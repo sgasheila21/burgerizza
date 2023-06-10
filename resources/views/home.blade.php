@@ -68,10 +68,10 @@
                             <input type="text" name="address" id="address" placeholder="Input recipient's address here" class="form-control _ge_de_ol" aria-required="true" style="height:15vh">
                         </div>
                     </div>
-                    @if ($errors->any())
+                    @if ($errors->add_errors->any())
                     <div class="alert alert-danger">
                         <ul class="mb-0">
-                            @foreach ($errors->all() as $error)
+                            @foreach ($errors->add_errors->all() as $error)
                             <li>{{ $error }}</li>
                             @endforeach
                         </ul>
