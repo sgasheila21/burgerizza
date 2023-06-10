@@ -37,7 +37,7 @@ class CartController extends Controller
         $user_addresses = Address::all()->where('user_id','=',$profile->id);
 
         $cart = CartHeader::join('categories', 'categories.id', '=', 'cart_headers.category_id')
-                        ->select('user_id','category_id','category_name','quantity')
+                        ->select('cart_headers.id','user_id','category_id','category_name','quantity')
                         ->where('user_id','=',$profile->id)
                         ->get();
                             

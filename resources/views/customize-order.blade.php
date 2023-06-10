@@ -10,9 +10,21 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
 
 @section('sub-content')
+
+@if ($errors->any())
+  <div class="alert alert-danger">
+      <ul class="mb-0">
+          @foreach ($errors->all() as $error)
+          <li>{{ $error }}</li>
+          @endforeach
+      </ul>
+  </div>
+@endif
+
 @if (count($selectedCategory) > 0)
   <form action="{{ route('add-to-cart') }}" method="POST">
     @csrf
+    <input type="text" hidden name="category_id" value="{{$selectedCategory[0]->category_id}}">
     @for ($i = 0; $i < count($selectedCategory); $i++)
     <div class="accordion m-1 p-2 d-flex" id="accordionExample">
       <div class="accordion-item">
@@ -37,7 +49,10 @@
             
 
         @if (count($products)>0)
-            @for ($i2 = 0; $i2 < count($products); $i2++)
+            @if (!$selectedCategory[$i]->multiple_choice)  
+              <input name="attribute_id_{{ $selectedCategory[$i]->attribute_id }}" type="radio" class="form-check-input" value=null checked hidden>
+            @endif
+            @for ($i2 = 0; $i2 < count($products); $i2++) {{-- looping each products inside an attribute--}}
                 <div class="accordion-body" style="width: 40vh;">
                   <div class="card p-2">
                     <img src="@if ($products[$i2]->product_image_path != null)
@@ -70,7 +85,7 @@
                         @endif
                       </p>
                       @if ($profile->role_id == 1) {{-- if Role = Customer --}}
-                        @if ($selectedCategory[$i]->multiple_choice) 
+                        @if ($selectedCategory[$i]->multiple_choice)  
                           <div class="qty ">
                             <button class="btn btn-primary count py-1 px-3 me-2"
                               type="button"
@@ -78,7 +93,10 @@
                                 this.parentNode.querySelector('input[type=number]').stepDown();
                               "
                             >-</button>
-                            <input name="product_quantity{{$i2}}" min="0" max="{{$products[$i2]->product_quantity}}" type="number" class="py-1 count w-80" name="qty" value="old('product_quantity') ?? 0">
+                            <input name="attribute_id_{{ $selectedCategory[$i]->attribute_id }} [{{ $products[$i2]->id }}] " min="0" max="{{$products[$i2]->product_quantity}}" 
+                              type="number" class="py-1 count w-80" name="qty" 
+                              value="{{ old('product_quantity') ?? 0 }}"
+                            >
                             <button class="btn btn-primary count py-1 px-3 ms-2"
                               type="button"
                               onclick="
@@ -86,13 +104,11 @@
                               "
                             >+</button>
                           </div>
-                        @else
+                        @else {{-- if radio button --}}
                           <div class="qty " style="text-align-last:center;">
-                            {{-- <input name="product_selected{{$products[$i2]->id}}" type="checkbox" class="form-check-input"
-                            @checked(false) --}}
-                            
-                        <input name="$selectedCategory[$i]->attribute_id" type="radio" class="form-check-input" value="{{$products[$i2]->id}}">
-                        
+                            <input name="attribute_id_{{ $selectedCategory[$i]->attribute_id }}" type="radio" class="form-check-input" value="{{ $products[$i2]->id }}"
+                             @checked(old('attribute_id_'.$selectedCategory[$i]->attribute_id) == $products[$i2]->id)
+                            >
                           </div>
                         @endif
                       @elseif($profile->role_id == 2) {{-- if Role = Admin --}}
@@ -140,6 +156,9 @@
       </div>
     @endfor
     @if ($profile->role_id == 1) {{-- if Role = Customer --}}
+      {{-- <div class="p-3 text-left">
+        <p><span style="font-weight: bold">Total: </span>Rp. <span id="total_cart_price"> 0 </span> </p>
+      </div> --}}
       <div class="add-to-cart-div" style="margin-bottom: 60px;">
         <button type="submit">Add To Cart</button>
       </div>
@@ -154,11 +173,20 @@
 @endif
 
 @if($profile->role_id == 2) {{-- if Role = Admin --}}
-  <div style="margin-bottom: 60px;" class="mx-4">
+  <div class="mx-4">
     <button onclick="window.location='{{ url($category_id.'/attribute/add') }}'">
       Add New Attribute
     </button>
   </div>
 @endif
+
+<div style="margin-bottom: 60px;"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+<script>
+  jQuery(document).ready(function($){
+      
+  });
+</script>
 
 @endsection

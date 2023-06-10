@@ -40,9 +40,10 @@
                          <?php
                            $cart_details = DB::table('cart_details')
                                           ->join('products', 'products.id', '=', 'cart_details.product_id')
-                                          ->select('id','product_name','product_image_path','product_description','product_price','product_quantity','product_status')->where('attribute_id', '=', $selectedCategory[$i]->attribute_id);
+                                          ->select('products.id','product_name','product_image_path','product_description','product_price','product_quantity','product_status')
+                                          ->where('cart_details.cart_header_id', '=', $currproduct->id)
+                                          ->get();
                          ?>
-
                           <div class="d-flex mb-4" style="max-width: 300px">
                             <button class="btn btn-primary px-3 me-2"
                               type="button"
