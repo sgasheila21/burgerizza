@@ -38,7 +38,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link ms-0 ps-0" href="#">
+          <a class="nav-link ms-0 ps-0" href="{{ url('cart') }}">
             <img src="{{ asset('assets/icon/shopping_cart_icon.svg') }}" alt="shopping cart">
           </a>
         </li>
