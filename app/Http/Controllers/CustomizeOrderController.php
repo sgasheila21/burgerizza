@@ -39,4 +39,8 @@ class CustomizeOrderController extends Controller
                 ->with('selectedCategory',$selectedCategory)
                 ->with('profile',$profile);
     }
+
+    public function addToCart(Request $request){
+        dd($request);
+    }
 }
