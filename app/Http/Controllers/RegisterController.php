@@ -47,7 +47,7 @@ class RegisterController extends Controller
             return back()->withErrors(['message' => "Your password and confirm password doesn't match"])->withInput();
         }
         else if (is_null($customer) && $request->password == $request->c_password){
-            DB::table('users')->insert([
+            User::create([
                 'username' => $request->username,
                 'email' => $request->email,
                 'phone_number' => $request->phone_number,
@@ -55,7 +55,7 @@ class RegisterController extends Controller
                 'role_id' => 1
             ]);
 
-            return view('home', compact('customer'))->withErrors(['success' => 'Your account is successfully registered!']);
+            return view('home', compact('customer'))->with(['success' => 'Your account is successfully registered!']);
         }
     }
 }
