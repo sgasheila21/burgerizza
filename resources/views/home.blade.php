@@ -42,7 +42,7 @@
     </div>
 
     <!-- POP UP ADDRESS -->
-    @if(auth()->user()->addresses->isEmpty())
+    @if(auth()->user()->addresses->isEmpty() && auth()->user()->role->name == "Customer")
     <div class="form-03-main mb-5">
     <button id="showModal" style="display:none" data-bs-toggle="modal" data-bs-target="#popUpAddress">Show Modal</button>
 

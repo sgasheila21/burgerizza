@@ -32,7 +32,7 @@ class UserController extends Controller
     public function editProfile(Request $request)
     {           
         if (!$request->filled('username') && !$request->filled('email') && !$request->filled('phone_number')) {
-            return redirect()->back()->withErrors(['message' => 'Please update at least one profile field.'])->withInput();
+            return redirect()->back()->with('failure','Nothing changed!');
         }
 
         if (is_null($request['username'])) {
@@ -67,7 +67,7 @@ class UserController extends Controller
         }
         
         if (!is_null($customer) && ($request->email == $customer->email && $user->id != $customer->id)){
-            return back()->withErrors(['message' => 'email is already in use, use another email'])->withInput();
+            return back()->with(['failure' => 'email is already in use, use another email']);
         }
         
         if ($request->filled('username')) {
@@ -83,9 +83,8 @@ class UserController extends Controller
             $user->phone_number = $request->input('phone_number');
         }
         $user->save();
-        session()->flash('success', 'Your profile has been changed successfully.');
 
-        return redirect('/profile');
+        return redirect('/profile')->with('success', 'Your profile has been changed successfully.');
     }
 
     public function updatePassword(Request $request)
@@ -97,7 +96,7 @@ class UserController extends Controller
             'o_password' => ['required',
                 function ($attribute, $value, $fail) {
                     if (!Hash::check($value, auth()->user()->password)) {
-                        $fail('Your old password is incorrect.');
+                        $fail('The old password is incorrect.');
                     }
                 },
             ],
@@ -116,16 +115,10 @@ class UserController extends Controller
             return redirect()->back()->withErrors($validator, 'errors_password');
         }
     
-        if (!password_verify($request->input('o_password'), auth()->user()->password)) {
-            return redirect()->back()->withErrors(['o_password' => 'The old password is incorrect.']);
-        }
-    
         $user->password = bcrypt($request->input('n_password'));
         $user->save();
 
-        session()->flash('success', 'Your password has been changed successfully.');
-    
-        return redirect('/profile');
+        return redirect('/profile')->with('success', 'Your password has been changed successfully.');
     }
 
 }
