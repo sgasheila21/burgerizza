@@ -55,7 +55,7 @@ class RegisterController extends Controller
                 'role_id' => 1
             ]);
 
-            return view('home', compact('customer'))->with(['success' => 'Your account is successfully registered!']);
+            return redirect('login')->with(['success' => 'Your account is successfully registered!']);
         }
     }
 }
