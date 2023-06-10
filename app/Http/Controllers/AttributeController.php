@@ -40,6 +40,10 @@ class AttributeController extends Controller
 
         return view('attribute')
                 ->with('categories',$categories)
+                ->with('category_id',$category_id)
+                ->with('attribute',$attribute)
                 ->with('attribute_id',$attribute_id);
     }
+
+    
 }

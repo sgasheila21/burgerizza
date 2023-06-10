@@ -6,24 +6,18 @@ use App\Models\Attribute;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
     public function index(Request $request){
+        $profile = Auth::user();
         $categories = Category::all()->where( strtolower('category_status'), '=', 'active');
         $attribute_id = $request->attribute_id;
         $product_id = $request->product_id;
 
-        $attribute = Attribute::select(
-                        'id',
-                        'category_id',
-                        'attribute_name',
-                        'attribute_description',
-                        'attribute_order',
-                        'attribute_status',
-                        'multiple_choice'
-                     )->where('id', '=', $attribute_id)
-                     ->get();
+        $attribute = Attribute::findOrFail($attribute_id);
 
         $product = Product::select(
                         'id',
@@ -44,7 +38,7 @@ class ProductController extends Controller
         }
 
         return view('product')
-        ->with('categories',$categories)
+                ->with('categories',$categories)
                 ->with('attribute_id',$attribute_id)
                 ->with('product',$product)
                 ->with('product_id',$product_id);
@@ -59,7 +53,7 @@ class ProductController extends Controller
             'product_name' => 'required|max:100',
             // 'product_image' => 'required',
             'product_price' => 'required',
-            'product_stock' => 'required',
+            'product_stock' => 'required|min:0',
         ],
         [
             'product_name.required' => 'The Product Name field is required',
@@ -67,6 +61,7 @@ class ProductController extends Controller
             // 'product_image.required' => 'The product image field is required.',
             'product_price.required' => 'The Product Price field is required.',
             'product_stock.required' => 'The Product Stock field is required',
+            'product_stock.min' => 'The Product Stock field can not negative',
         ]);
         
         if($product_id == "add"){
@@ -104,7 +99,10 @@ class ProductController extends Controller
         }
 
         $product=[];
-        return view('product')
+        $attribute = Attribute::findOrFail($attribute_id);
+        $category = Category::findOrFail($attribute->category_id);
+        
+        return redirect( "customize-order/". Str::lower(str_replace(' ', '', $category->category_name)) )
                 ->with('categories',$categories)
                 ->with('product_id',$product_id)
                 ->with('attribute_id',$attribute_id)

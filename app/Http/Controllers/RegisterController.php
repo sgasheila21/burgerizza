@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -47,6 +48,8 @@ class RegisterController extends Controller
             return back()->withErrors(['message' => "Your password and confirm password doesn't match"])->withInput();
         }
         else if (is_null($customer) && $request->password == $request->c_password){
+            $categories = Category::all()->where( strtolower('category_status'), '=', 'active');
+            
             DB::table('users')->insert([
                 'username' => $request->username,
                 'email' => $request->email,
@@ -55,7 +58,8 @@ class RegisterController extends Controller
                 'role_id' => 1
             ]);
 
-            return view('home', compact('customer'))->withErrors(['success' => 'Your account is successfully registered!']);
+            session()->put('success', 'Your account is successfully registered!');
+            return view('home', compact('customer'))->with('categories',$categories);
         }
     }
 }
